@@ -1,0 +1,32 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js --exec babel-node",
+    "build": "babel server.js -d dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/course-market/backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/course-market/backend/issues"
+  },
+  "homepage": "https://github.com/course-market/backend#readme",
+  "dependencies": {
+    "cors": "^2.7.1",
+    "express": "^4.13.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.3.17",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-stage-2": "^6.3.13",
+    "babelify": "^7.2.0",
+    "nodemon": "^1.8.1"
+  }
+}
