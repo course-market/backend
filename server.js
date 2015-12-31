@@ -40,7 +40,7 @@ app.get('/catalog/:semester', (req, res) => {
   if (semester in catalog) {
     res.send(catalog[semester]);
   } else {
-    res.status(404).send(ERRORS.SEMESTER_UNAVAILABLE);
+    res.status(400).send(ERRORS.SEMESTER_UNAVAILABLE);
   }
 });
 
@@ -49,7 +49,7 @@ app.get('/posts/:semester', (req, res) => {
   if (semester in posts) {
     res.send(posts[semester]);
   } else {
-    res.status(404).send(ERRORS.SEMESTER_UNAVAILABLE);
+    res.status(400).send(ERRORS.SEMESTER_UNAVAILABLE);
   }
 });
 
@@ -58,7 +58,7 @@ app.get('/requests/:semester', (req, res) => {
   if (semester in requests) {
     res.send(requests[semester]);
   } else {
-    res.status(404).send(ERRORS.SEMESTER_UNAVAILABLE);
+    res.status(400).send(ERRORS.SEMESTER_UNAVAILABLE);
   }
 
 });
@@ -74,14 +74,13 @@ app.post('/submit/post/:semester', (req, res) => {
     }
     res.send('ok');
   } else {
-    res.status(404).send(ERRORS.SEMESTER_UNAVAILABLE);
+    res.status(400).send(ERRORS.SEMESTER_UNAVAILABLE);
   }
   // write new data to disk
   fs.writeFileSync(`./data/posts_${semester}.json`, JSON.stringify(posts[semester]));
 });
 
 app.post('/submit/request/:semester', (req, res) => {
-  console.log(req.body);
   let { semester } = req.params;
   if (semester in posts) {
     var idx = R.findIndex(R.propEq('courseId', req.body.courseId))(requests[semester]);
@@ -92,7 +91,7 @@ app.post('/submit/request/:semester', (req, res) => {
     }
     res.send('ok');
   } else {
-    res.status(404).send(ERRORS.SEMESTER_UNAVAILABLE);
+    res.status(400).send(ERRORS.SEMESTER_UNAVAILABLE);
   }
   // write new data to disk
   fs.writeFileSync(`./data/requests_${semester}.json`, JSON.stringify(requests[semester]));

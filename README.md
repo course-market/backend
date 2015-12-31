@@ -1,32 +1,32 @@
-# WM Classified Backend
+WM Classified Backend
 ---
 
-Server for [WM Classified](http://course-market.github.io/).
+Server for [WM Classified](http://wm-classified.github.io/).
 
-#API Endpoints
+# API Endpoints
 
-### `/catalog/semesters`
+#### `/catalog/semesters`
 
-example:
+Example:
 ```js
 fetch(URL + '/catalog/semesters')
 ```
 
 Response: an array of available semesters
-example:
 ```js
-[ 'fall_2015', spring_2016 ]
+[ 'fall_2015', 'spring_2016' ]
 ```
 
-### `/catalog/:semester`
+---
 
-example:
+#### `/catalog/:semester`
+
+Example:
 ```js
 fetch(URL + '/catalog/spring_2016')
 ```
 
 Response: an array of all courses for the given semester
-example:
 ```js
 [
   {
@@ -58,7 +58,10 @@ example:
 ]
 ```
 
-### `/posts/:semester`
+---
+
+
+#### `/posts/:semester`
 
 Example:
 ```js
@@ -66,25 +69,26 @@ fetch(URL + '/posts/spring_2016')
 ```
 
 Response: an array of posts for a given semester
-example
 ```js
 [
   {
     "courseId":"ANTH 150 01 ",
     "emails":[
-      "d@wm.edu"
+      "student@wm.edu"
     ]
   },
   {
     "courseId":"APSC 401 01 ",
     "emails":[
-      "d@wm.edu"
+      "student@wm.edu"
     ]
   }
 ]
 ```
 
-### `/requests/:semester`
+---
+
+#### `/requests/:semester`
 
 Example:
 ```js
@@ -97,26 +101,74 @@ Response: an array of requests for a given semester
   {
     "courseId":"ANTH 150 01 ",
     "emails":[
-      "d@wm.edu"
+      "student@wm.edu"
     ]
   },
   {
     "courseId":"APSC 401 01 ",
     "emails":[
-      "d@wm.edu"
+      "student@wm.edu"
     ]
   }
 ]
 ```
 
-### `/submit/post/:semester`
+---
+
+#### `/submit/post/:semester`
+
+The request body must be a JSON object structured like so:
+
+```
+{
+  'courseId': <String>
+  'email': <String>
+}
+```
+
+Example:
+```js
+fetch(`${URL}/submit/post/spring_2016`, {
+  method: 'POST',
+  headers: new Headers({ 'Content-Type': 'application/json' }),
+  body: JSON.stringify({ courseId: 'APSC 401 01 ', email: 'student@wm.edu'  })
+})
+
+```
+
+Response:
+- `ok`: the data was successfully added
+- `400`: the requested semester is not available
+
+---
+
+#### `/submit/request/:semester`
+
+The request body must be a JSON object structured like so:
+```
+{
+  'courseId': <String>
+  'email': <String>
+}
+```
+
+Example
+```js
+fetch(`${URL}/submit/request/spring_2016`, {
+  method: 'POST',
+  headers: new Headers({ 'Content-Type': 'application/json' }),
+  body: JSON.stringify({ courseId: 'APSC 401 01 ', email: 'student@wm.edu'  })
+})
+
+```
+
+Response:
+- `ok`: the data was successfully added
+- `400`: the requested semester is not available
 
 
-### `/submit/request/:semester`
 
-
-
-## Developing
+# Developing
 Depends on a global install of [babel-cli](https://www.npmjs.com/package/babel-cli)
 ```
 npm i -g babel-cli
@@ -125,6 +177,6 @@ npm i -g babel-cli
 For development, run:
 ```
 npm install
-npm start 
+npm start
 ```
 The server will be listening on port `8080`
