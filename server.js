@@ -16,7 +16,6 @@ const catalog = {
   [FALL_2015]: JSON.parse(fs.readFileSync('./data/catalog_fall_2015.json'))
 };
 
-// express middleware
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -62,13 +61,23 @@ app.post('/request/submit/:semester', (req, res) => {
 });
 
 app.delete('/post/delete/:semester/:courseId/:email', (req, res) => {
-  DB.deletePost({ semester, courseId, email }) // eslint-disable-line no-undef
+  let { semester, courseId, email } = req.params;
+  DB.deletePost({
+    semester: decodeURIComponent(semester),
+    courseId: decodeURIComponent(courseId),
+    email: decodeURIComponent(email)
+  })
     .then(() => res.send('ok'))
     .catch(e => res.status(400).send(e));
 });
 
 app.delete('/request/delete/:semester/:courseId/:email', (req, res) => {
-  DB.deleteRequest({ semester, courseId, email }) // eslint-disable-line no-undef
+  let { semester, courseId, email } = req.params;
+  DB.deleteRequest({
+    semester: decodeURIComponent(semester),
+    courseId: decodeURIComponent(courseId),
+    email: decodeURIComponent(email)
+  })
     .then(() => res.send('ok'))
     .catch(e => res.status(400).send(e));
 });

@@ -113,7 +113,6 @@ export default class DB {
    * @param {String} list - `posts` or `requests`
    */
   destroy(opts, list) {
-    console.log(opts, list);
     let { semester, courseId, email } = opts;
     return new Promise((resolve, reject) => {
       const tableName = `${list}_${semester}`;
@@ -122,22 +121,14 @@ export default class DB {
           return reject(err);
         }
         let emails = JSON.parse(data.emails);
-        if (emails.length === 0) {
+        if (emails.length === 1) {
           this.db.run(`DELETE FROM ${tableName} WHERE courseId = '${courseId}'`, [], (e) => {
-            if (e) {
-              reject(e);
-            } else {
-              resolve();
-            }
+            if (e) { reject(e); } else { resolve(); }
           });
         } else {
-          emails = R.without([email], emails);
+          emails = JSON.stringify(R.without([email], emails));
           this.db.run(`UPDATE ${tableName} SET emails = '${emails}' WHERE courseId = '${courseId}'`, [], (e) => {
-            if (e) {
-              reject(e);
-            } else {
-              resolve();
-            }
+            if (e) { reject(e); } else { resolve(); }
           });
         }
       });
@@ -151,7 +142,7 @@ export default class DB {
    * @param {String} opts.email
    */
   deletePost(opts) {
-    this.destroy(opts, 'post');
+    return this.destroy(opts, 'posts');
   }
 
   /**
@@ -160,7 +151,7 @@ export default class DB {
    * @param {String} opts.courseId
    * @param {String} opts.email
    */
-  deleteRequests(opts) {
-    this.destroy(opts, 'requests');
+  deleteRequest(opts) {
+    return this.destroy(opts, 'requests');
   }
 }
